@@ -12,13 +12,13 @@
 
 - block:
     - name: create a swap file
-      shell: fallocate -l {{ swap_size }} /swapfile
+      shell: fallocate -l {{ swap_size }} {{ path_to_swap }}
       args:
         creates: /swapfile
 
     - name: set the correct permissions
       file:
-        path: /swapfile
+        path: {{ path_to_swap }}
         owner: root
         group: root
         mode: '0600'
@@ -34,7 +34,7 @@
     - name: add swap file to fstab
       mount:
         name: none
-        src: /swapfile
+        src: {{ path_to_swap }}
         fstype: swap
         opts: sw
         passno: 0
