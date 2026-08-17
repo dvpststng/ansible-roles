@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for create_users
+users:
+  - name: automated_user1
+    group: automated_user1
+    key_file: "files/user1.pub"
+    shell: /bin/bash
+  
+  - name: automated_user2
+    group: automated_user2
+    key_file: "files/user2.pub"
+    shell: /bin/bash
+
+  - name: automated_user3
+    group: automated_user3
+    key_file: "files/user3.pub"
+    shell: /bin/bash
