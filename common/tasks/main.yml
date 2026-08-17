@@ -18,7 +18,7 @@
 
     - name: set the correct permissions
       file:
-        path: {{ path_to_swap }}
+        path: "{{ path_to_swap }}"
         owner: root
         group: root
         mode: '0600'
@@ -34,7 +34,7 @@
     - name: add swap file to fstab
       mount:
         name: none
-        src: {{ path_to_swap }}
+        src: "{{ path_to_swap }}"
         fstype: swap
         opts: sw
         passno: 0

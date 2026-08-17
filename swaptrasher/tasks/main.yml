@@ -1,3 +1,32 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for swaptrasher
+- name: Check if swap file exists
+  ansible.builtin.stat:
+    path: "{{ swap_path }}"
+  register: swap_file_stat
+
+- name: Check swap usage
+  ansible.builtin.shell: free -m | grep Swap | awk '{print $3}'
+  register: swap_usage
+
+- name: Remove swap file
+  block:   
+    - name: Disable swap file
+      ansible.builtin.shell:
+        cmd: swapoff "{{ swap_path }}"
+      failed_when: swap_usage.stdout | int > 0
+
+    - name: Remove swap file from fstab
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '.*swap.*'
+        state: absent
+      failed_when: swap_usage.stdout | int > 0
+
+    - name: Delete swap file
+      ansible.builtin.file:
+        path: "{{ swap_path }}"
+        state: absent    
+      failed_when: swap_usage.stdout | int > 0 
+  when: swap_file_stat.stat.exists
