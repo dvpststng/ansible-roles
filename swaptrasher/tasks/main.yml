@@ -15,18 +15,21 @@
     - name: Disable swap file
       ansible.builtin.shell:
         cmd: swapoff "{{ swap_path }}"
-      failed_when: swap_usage.stdout | int > 0
+      when: swap_usage.stdout | int == 0
+      become: yes
 
     - name: Remove swap file from fstab
       ansible.builtin.lineinfile:
         path: /etc/fstab
         regexp: '.*swap.*'
         state: absent
-      failed_when: swap_usage.stdout | int > 0
+      when: swap_usage.stdout | int == 0
+      become: yes
 
     - name: Delete swap file
       ansible.builtin.file:
         path: "{{ swap_path }}"
         state: absent    
-      failed_when: swap_usage.stdout | int > 0 
+      when: swap_usage.stdout | int == 0
+      become: yes
   when: swap_file_stat.stat.exists

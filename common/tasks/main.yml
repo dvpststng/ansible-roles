@@ -15,6 +15,7 @@
       shell: fallocate -l {{ swap_size }} {{ path_to_swap }}
       args:
         creates: /swapfile
+      become: yes
 
     - name: set the correct permissions
       file:
@@ -22,14 +23,17 @@
         owner: root
         group: root
         mode: '0600'
+      become: yes
 
     - name: make the file a swap file
       shell: mkswap /swapfile
       when: ansible_facts.swapfree_mb == 0
+      become: yes
 
     - name: enable the swap file
       shell: swapon /swapfile
       when: ansible_facts.swapfree_mb == 0
+      become: yes
 
     - name: add swap file to fstab
       mount:
@@ -40,3 +44,9 @@
         passno: 0
         dump: 0
         state: present
+      become: yes
+
+- name: update apt cache
+  apt:
+    update_cache: yes
+  become: yes
