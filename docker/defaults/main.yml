@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for docker
+docker_users:
+  - devops
+  - automated_user1
+  - automated_user2
+
+docker_apt:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io 
+  - docker-buildx-plugin
+  - docker-compose-plugin

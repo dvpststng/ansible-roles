@@ -2,5 +2,13 @@
 ---
 # defaults file for common
 swap_size: 1G
+
 region_city: Europe/Moscow
+
 path_to_swap: /swapfile
+
+packages:
+  - git
+  - htop
+  - net-tools
+  - wget
